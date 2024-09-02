@@ -1,0 +1,47 @@
+{% extends "base.html" %} {% block title %}Hasil Ujian{% endblock %} {% block
+    content %}
+    
+    <br>
+    <h3 align="center">Hasil Ujian</h3>
+    <br>
+    <div class="table table-responsive table-hover table-bordered">
+      <table class="table">
+        <thead class="text-center thead-dark">
+          <tr>
+            <th>Nama Ujian</th>
+            <th>Nilai</th>
+          </tr>
+        </thead>
+        {% for result in results %}
+        <tbody class="text-center">
+          <td>{{result.exam_name}}</td>
+          <td>{{result.grade}}</td>
+        </tbody>
+        {% endfor %}
+      </table>
+    </div>
+    <div class="text-right">
+      <a href="{{results.prev_num}}" class="btn btn-outline-dark {% if results.page == 1 %}disabled{% endif %}">&laquo;</a>
+      {% for number in results.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+        {% if number %}
+          {% if results.page != number %}
+            <span>
+              <a class="btn btn-outline-dark"
+                  href="{{number}}">
+              {{number}}
+              </a>
+            </span>
+          {% else %}
+              <span class="btn btn-dark">{{number}}</span>
+          {% endif %}
+        {% else %}
+        ...
+        {% endif %}
+      {% endfor %}
+      <a href="{{results.next_num}}" class="btn btn-outline-dark {% if results.page == results.pages %}disabled{% endif %}">&raquo;</a>
+      <p class="text-right mt-3">
+        Halaman {{ results.page }} dari {{ results.pages }}
+      </p>
+    </div>
+    {% endblock %}
+    

@@ -1,0 +1,63 @@
+{% extends "base.html" %} {% block title %}Tambah Akun{% endblock %} {% block
+content %}
+
+<br>
+<form method="POST">
+  <h3 align="center">Tambah Akun</h3>
+  <div class="form-group">
+    <label for="email">Email</label>
+    <input
+      type="email"
+      class="form-control"
+      id="email"
+      name="email"
+      placeholder="Masukkan email"
+      required
+    />
+  </div>
+  <div class="form-group">
+    <label for="name">Nama</label>
+    <input
+      type="text"
+      class="form-control"
+      id="name"
+      name="name"
+      placeholder="Masukkan Nama"
+      required
+    />
+  </div>
+  <div class="form-group">
+    <label for="password1">Password</label>
+    <input
+      type="password"
+      class="form-control"
+      id="password1"
+      name="password1"
+      placeholder="Masukkan password"
+      required
+    />
+  </div>
+  <div class="form-group">
+    <label for="password2">Password (Konfirmasi)</label>
+    <input
+      type="password"
+      class="form-control"
+      id="password2"
+      name="password2"
+      placeholder="Konfirmasi password"
+      required
+    />
+  </div>
+  <div class="form-group">
+    <label for="type">Tipe Akun</label>
+    <br>
+    <select id="type" name="type" class="form-control"required>
+      <option value="user">User</option>
+      <option value="admin">Admin</option>
+    </select>
+  </div>
+  <br>
+  <a type="button" class="btn btn-secondary" href="/list_account/1">Kembali</a> 
+  <button type="submit" class="btn btn-primary">Tambahkan Account</button>
+</form>
+{% endblock %}

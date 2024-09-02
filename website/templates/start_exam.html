@@ -1,0 +1,11 @@
+{% extends "base.html" %} {% block title %}Mulai Ujian{% endblock %} {% block content
+%}
+    
+<br>
+<form class ="text-center" method="POST">
+    <h1>{{exams.name}}</h3>
+    <h3>Ujian dimulai pada <br> {{exams.start_time}}</h3>
+    <h3>Ujian berakhir pada <br> {{exams.end_time}}</h3> <br>
+    <a type="button" class="btn btn-info" id="exam" href="/exam/{{exams.token}}/1">Mulai Ujian</a>
+</form>
+{% endblock %}

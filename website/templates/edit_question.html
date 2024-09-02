@@ -1,0 +1,80 @@
+{% extends "base.html" %} {% block title %}Edit Pertanyaan{% endblock %} {% block
+    content %}
+    
+<br>
+<form method="POST">
+  <h3 align="center">Edit Pertanyaan</h3>
+  <div class="form-group">
+    <label for="question">Pertanyaan</label>
+    <input
+      type="text"
+      class="form-control"
+      id="question"
+      name="question"
+      placeholder="Masukkan pertanyaan"
+      value="{{questions.question}}"
+      required
+    />
+  <div class="form-group">
+    <label for="answer1">Jawaban A</label>
+    <input
+      type="text"
+      class="form-control"
+      id="answer1"
+      name="answer1"
+      placeholder="Masukkan jawaban A"
+      value="{{questions.answer1}}"
+      required
+    />
+  </div>
+  <div class="form-group">
+    <label for="answer2">Jawaban B</label>
+    <input
+      type="text"
+      class="form-control"
+      id="answer2"
+      name="answer2"
+      placeholder="Masukkan jawaban B"
+      value="{{questions.answer2}}"
+      required
+    />
+  </div>
+  <div class="form-group">
+    <label for="answer3">Jawaban C</label>
+    <input
+      type="text"
+      class="form-control"
+      id="answer3"
+      name="answer3"
+      placeholder="Masukkan jawaban C"
+      value="{{questions.answer3}}"
+      required
+    />
+  </div>
+  <div class="form-group">
+    <label for="answer4">Jawaban D</label>
+    <input
+      type="text"
+      class="form-control"
+      id="answer4"
+      name="answer4"
+      placeholder="Masukkan jawaban D"
+      value="{{questions.answer4}}"
+      required
+    />
+  </div>
+  <div class="form-group">
+    <label for="correct">Kunci Jawaban</label>
+    <select id="correct" name="correct" required>
+        <option value="A">A</option>
+        <option value="B">B</option>
+        <option value="C">C</option>
+        <option value="D">D</option>
+    </select>
+  </div>
+  <br />
+  <a type="button" class="btn btn-secondary" href="/list_question/{{examid}}/1">Kembali</a> 
+  <button type="submit" class="btn btn-primary">Edit Pertanyaan</button>
+</form>
+{% endblock %}
+    

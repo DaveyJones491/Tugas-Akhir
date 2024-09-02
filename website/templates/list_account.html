@@ -1,0 +1,60 @@
+{% extends "base.html" %} {% block title %}List Akun{% endblock %} {% block
+content %}
+
+<br>
+<h3 align="center">List Akun</h3>
+<div class="text-right">
+  <a type="button" class="btn btn-info" id="add_account" href="/add_account">Tambah Akun</a>
+</div>
+<br>
+<div class="table table-responsive table-hover table-bordered">
+  <table class="table">
+    <thead class="text-center thead-dark">
+      <tr>
+        <th>ID</th>
+        <th>Email</th>
+        <th>Nama</th>
+        <th>Tipe</th>
+        <th>Aksi</th>
+      </tr>
+    </thead>
+    {% for user in db_user %}
+    <tbody class="text-center">
+      <td>{{user.id}}</td>
+      <td>{{user.email}}</td>
+      <td>{{user.name}}</td>
+      <td>{{user.type}}</td>
+      <td>
+        <a class="btn btn-primary" href="/edit_account/{{user.id}}">Edit</a>
+        <a class="btn btn-danger" href="/delete_account/{{user.id}}/{{db_user.page}}"
+        onclick="return confirm('Apakah anda yakin akan menghapus akun {{ user.name }}?');" title="Delete">
+        Hapus</a>
+      </td>
+    </tbody>
+    {% endfor %}
+  </table>
+</div>
+<div class="text-right">
+  <a href="{{db_user.prev_num}}" class="btn btn-outline-dark {% if db_user.page == 1 %}disabled{% endif %}">&laquo;</a>
+  {% for number in db_user.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+    {% if number %}
+      {% if db_user.page != number %}
+        <span>
+          <a class="btn btn-outline-dark"
+              href="{{number}}">
+          {{number}}
+          </a>
+        </span>
+      {% else %}
+          <span class="btn btn-dark">{{number}}</span>
+      {% endif %}
+    {% else %}
+    ...
+    {% endif %}
+  {% endfor %}
+  <a href="{{db_user.next_num}}" class="btn btn-outline-dark {% if db_user.page == db_user.pages %}disabled{% endif %}">&raquo;</a>
+  <p class="text-right mt-3">
+    Halaman {{ db_user.page }} dari {{ db_user.pages }}
+  </p>
+</div>
+{% endblock %}

@@ -1,0 +1,65 @@
+{% extends "base.html" %} {% block title %}List Pertanyaan{% endblock %} {% block
+content %}
+
+<br>
+<h3 align="center">List Pertanyaan</h3>
+<div class="text-right">
+  <a type="button" class="btn btn-info" href="/add_question/{{examid}}">Tambah Pertanyaan</a>
+</div>
+<br>
+<div class="table table-responsive table-hover table-bordered">
+  <table class="table">
+    <thead class="text-center thead-dark">
+      <tr>
+        <th>Pertanyaan</th>
+        <th>Jawaban A</th>
+        <th>Jawaban B</th>
+        <th>Jawaban C</th>
+        <th>Jawaban D</th>
+        <th>Kunci Jawaban</th>
+        <th>Aksi</th>
+      </tr>
+    </thead>
+    {% for question in questions %}
+    <tbody class="text-center">
+      <td>{{question.question}}</td>
+      <td>{{question.answer1}}</td>
+      <td>{{question.answer2}}</td>
+      <td>{{question.answer3}}</td>
+      <td>{{question.answer4}}</td>
+      <td>{{question.correct}}</td>
+      <td>
+        <a type="button" class="btn btn-primary" href="/edit_question/{{question.id}}">Edit</a>
+        <a class="btn btn-danger" href="/delete_question/{{question.id}}/{{examid}}/{{questions.page}}"
+        onclick="return confirm('Apakah anda yakin akan menghapus pertanyaan {{ question.id }}?');" title="Delete">
+        Hapus</a>
+      </td>
+    </tbody>
+    {% endfor %}
+  </table>
+</div>
+<div class="text-right">
+  <a href="{{questions.prev_num}}" class="btn btn-outline-dark {% if questions.page == 1 %}disabled{% endif %}">&laquo;</a>
+  {% for number in questions.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+    {% if number %}
+      {% if questions.page != number %}
+        <span>
+          <a class="btn btn-outline-dark"
+              href="{{number}}">
+          {{number}}
+          </a>
+        </span>
+      {% else %}
+          <span class="btn btn-dark">{{number}}</span>
+      {% endif %}
+    {% else %}
+    ...
+    {% endif %}
+  {% endfor %}
+  <a href="{{questions.next_num}}" class="btn btn-outline-dark {% if questions.page == questions.pages %}disabled{% endif %}">&raquo;</a>
+  <p class="text-right mt-3">
+    Halaman {{ questions.page }} dari {{ questions.pages }}
+  </p>
+</div>
+{% endblock %}
+    

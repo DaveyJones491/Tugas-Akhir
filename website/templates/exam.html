@@ -1,0 +1,116 @@
+{% extends "base.html" %} {% block title %}Exam{% endblock %} {% block content
+%}
+<br>
+<h1 align="center">{{exams.name}}</h3>
+<div class="text-center mt-3">
+  <h3>
+    Soal {{ questions.page }}
+  </h3>
+</div>
+<form method="POST">
+  <div class="form-group card" style="font-size:20px;border-width:3px;border-color:darkgrey">
+    {% for question in questions %}
+    <div class="card-header" style="font-size:24px">
+      <label for="exam">{{question.question}}</label>
+    </div>
+    <div class="card-body">
+      {% if select == "A" %}
+        <input type="radio" id="answer1" name="answer" value="A" checked>
+        <label for="answer1">A. {{question.answer1}}</label><br><br>
+        <input type="radio" id="answer2" name="answer" value="B">
+        <label for="answer2">B. {{question.answer2}}</label><br><br>
+        <input type="radio" id="answer3" name="answer" value="C">
+        <label for="answer3">C. {{question.answer3}}</label><br><br>
+        <input type="radio" id="answer4" name="answer" value="D">
+        <label for="answer4">D. {{question.answer4}}</label><br>
+      {% elif select == "B" %}
+        <input type="radio" id="answer1" name="answer" value="A">
+        <label for="answer1">A. {{question.answer1}}</label><br><br>
+        <input type="radio" id="answer2" name="answer" value="B"checked>
+        <label for="answer2">B. {{question.answer2}}</label><br><br>
+        <input type="radio" id="answer3" name="answer" value="C">
+        <label for="answer3">C. {{question.answer3}}</label><br><br>
+        <input type="radio" id="answer4" name="answer" value="D">
+        <label for="answer4">D. {{question.answer4}}</label><br>
+      {% elif select == "C" %}
+        <input type="radio" id="answer1" name="answer" value="A">
+        <label for="answer1">A. {{question.answer1}}</label><br><br>
+        <input type="radio" id="answer2" name="answer" value="B">
+        <label for="answer2">B. {{question.answer2}}</label><br><br>
+        <input type="radio" id="answer3" name="answer" value="C"checked>
+        <label for="answer3">C. {{question.answer3}}</label><br><br>
+        <input type="radio" id="answer4" name="answer" value="D">
+        <label for="answer4">D. {{question.answer4}}</label><br>
+      {% elif select == "D" %}
+        <input type="radio" id="answer1" name="answer" value="A">
+        <label for="answer1">A. {{question.answer1}}</label><br><br>
+        <input type="radio" id="answer2" name="answer" value="B">
+        <label for="answer2">B. {{question.answer2}}</label><br><br>
+        <input type="radio" id="answer3" name="answer" value="C">
+        <label for="answer3">C. {{question.answer3}}</label><br><br>
+        <input type="radio" id="answer4" name="answer" value="D"checked>
+        <label for="answer4">D. {{question.answer4}}</label><br>
+      {% else %}
+        <input type="radio" id="answer1" name="answer" value="A">
+        <label for="answer1">A. {{question.answer1}}</label><br><br>
+        <input type="radio" id="answer2" name="answer" value="B">
+        <label for="answer2">B. {{question.answer2}}</label><br><br>
+        <input type="radio" id="answer3" name="answer" value="C">
+        <label for="answer3">C. {{question.answer3}}</label><br><br>
+        <input type="radio" id="answer4" name="answer" value="D">
+        <label for="answer4">D. {{question.answer4}}</label><br>
+      {% endif %}
+    </div>
+  </div>
+  <br>
+  <div class="container" style="width:100%">
+    <div class="row">
+      <div class="col">
+        <a href="{{questions.prev_num}}" class="btn btn-outline-dark {% if questions.page == 1 %}disabled{% endif %}">Soal Sebelumnya</a>
+      </div>
+      <div class="col">
+        <a href="{{questions.next_num}}" class="btn btn-outline-dark {% if questions.page == questions.pages %}disabled{% endif %}" style="float:right">Soal Selanjutnya</a>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col text-right" style="color:white">
+        <a class="btn btn-warning" href="/mark_answer/{{exams.token}}/{{question.id}}">Tandai Soal</a>
+      </div>
+      <div class="col text-left" style="color:white">
+        <button class="btn btn-primary" type="submit">Simpan Jawaban</button>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col text-center" style="color:white;width:150px">
+        <a class="btn btn-info" href="/soal/{{exams.token}}/{{questions.page}}">Soal</a>
+        <a class="btn btn-success" href="/jawaban/{{exams.token}}/{{questions.page}}">Jabawan</a>
+        <a class="btn btn-secondary" href="/stt/{{exams.token}}/{{questions.page}}/{{question.id}}">STT</a>
+      </div>
+    </div>
+  </div>
+    {% endfor %}
+  <br>
+  <div class="text-center">
+    {% for number in questions.iter_pages(left_edge=questions.pages, right_edge=questions.pages) %}
+      {% if questions.page != number %}
+        <span>
+          <a class="btn btn-outline-dark" style="width:18%;margin-bottom:5px"
+              href="{{number}}">
+          {{number}}  
+          </a>
+        </span>
+      {% else %}
+          <span class="btn btn-dark" style="width:18%;margin-bottom:5px">{{number}}</span>
+      {% endif %}
+    {% endfor %}
+  </div>
+  <div class="text-center mt-3">
+    <p>
+      Soal ke {{ questions.page }} dari {{ questions.pages }}
+    </p>
+    <a class="btn btn-danger" href="/end_exam/{{exams.id}}">Selesai</a>
+  </div>
+</form>
+{% endblock %}

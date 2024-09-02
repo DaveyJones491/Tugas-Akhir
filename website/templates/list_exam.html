@@ -1,0 +1,64 @@
+{% extends "base.html" %} {% block title %}List Ujian{% endblock %} {% block
+content %}
+
+<br>
+<h3 align="center">List Ujian</h3>
+<div class="text-right">
+  <a type="button" class="btn btn-info" id="add_exam" href="/add_exam">Tambah Ujian</a>
+</div>
+<br>
+<div class="table table-responsive table-hover table-bordered">
+  <table class="table">
+    <thead class="text-center thead-dark">
+      <tr>
+        <th>ID</th>
+        <th>Nama</th>
+        <th>Waktu Mulai</th>
+        <th>Waktu Selesai</th>
+        <th>Token</th>
+        <th>Aksi</th>
+      </tr>
+    </thead class="text-center">
+    {% for exam in exams %}
+    <tbody class="text-center">
+      <td>{{exam.id}}</td>
+      <td>{{exam.name}}</td>
+      <td>{{exam.start_time}}</td>
+      <td>{{exam.end_time}}</td>
+      <td>{{exam.token}}</td>
+      <td>
+        <a type="button" class="btn btn-primary" href="/edit_exam/{{exam.id}}">Edit</a>
+        <a type="button" class="btn btn-warning" href="/list_question/{{exam.id}}/1">List Pertanyaan</a>
+        <a class="btn btn-danger" href="/delete_exam/{{exam.id}}/{{exams.page}}"
+        onclick="return confirm('Apakah anda yakin akan menghapus ujian {{ exam.name }}?');" title="Delete">
+        Hapus</a>
+        <a type="button" class="btn btn-success" href="/generate_tts/{{exam.id}}/{{exam.token}}/{{exams.page}}">Generate TTS</a>
+      </td>
+    </tbody>
+    {% endfor %}
+  </table>
+</div>
+<div class="text-right">
+  <a href="{{exams.prev_num}}" class="btn btn-outline-dark {% if exams.page == 1 %}disabled{% endif %}">&laquo;</a>
+  {% for number in exams.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+    {% if number %}
+      {% if exams.page != number %}
+        <span>
+          <a class="btn btn-outline-dark"
+              href="{{number}}">
+          {{number}}
+          </a>
+        </span>
+      {% else %}
+          <span class="btn btn-dark">{{number}}</span>
+      {% endif %}
+    {% else %}
+    ...
+    {% endif %}
+  {% endfor %}
+  <a href="{{exams.next_num}}" class="btn btn-outline-dark {% if exams.page == exams.pages %}disabled{% endif %}">&raquo;</a>
+  <p class="text-right mt-3">
+    Halaman {{ exams.page }} dari {{ exams.pages }}
+  </p>
+</div>
+{% endblock %}

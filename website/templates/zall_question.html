@@ -1,0 +1,67 @@
+{% extends "base.html" %} {% block title %}Question List{% endblock %} {% block
+    content %}
+    
+    <br>
+    <h3 align="center">Question List</h3>
+    <div class="text-right">
+      <a type="button" class="btn btn-info" href="/add_question/{{examid}}">Add Question</a>
+    </div>
+    <br>
+    <div class="table table-responsive table-hover">
+      <table class="table">
+        <thead class="text-center">
+          <tr>
+            <th>Exam ID</th>
+            <th>Exam</th>
+            <th>Question</th>
+            <th>Answer A</th>
+            <th>Answer B</th>
+            <th>Answer C</th>
+            <th>Answer D</th>
+            <th>Correct Answer</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        {% for question in questions %}
+        <tbody class="text-center">
+          <td>{{question.question}}</td>
+          <td>{{question.answer1}}</td>  
+          <td>{{question.question}}</td>
+          <td>{{question.answer1}}</td>
+          <td>{{question.answer2}}</td>
+          <td>{{question.answer3}}</td>
+          <td>{{question.answer4}}</td>
+          <td>{{question.correct}}</td>
+          <td>
+            <a type="button" class="btn btn-primary" href="/edit_question/{{question.id}}">Edit</a>
+            <button type="button" class="btn btn-danger" onClick="deleteQuestion(this)" data-id="{{question.id}}">Delete</button>
+          </td>
+        </tbody>
+        {% endfor %}
+      </table>
+    </div>
+    <div class="text-right">
+      <a href="{{questions.prev_num}}" class="btn btn-outline-dark {% if questions.page == 1 %}disabled{% endif %}">&laquo;</a>
+      {% for number in questions.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+        {% if number %}
+          {% if questions.page != number %}
+            <span>
+              <a class="btn btn-outline-dark"
+                  href="{{number}}">
+              {{number}}
+              </a>
+            </span>
+          {% else %}
+              <span class="btn btn-dark">{{number}}</span>
+          {% endif %}
+        {% else %}
+        ...
+        {% endif %}
+      {% endfor %}
+      <a href="{{questions.next_num}}" class="btn btn-outline-dark {% if questions.page == questions.pages %}disabled{% endif %}">&raquo;</a>
+      <p class="text-right mt-3">
+        Showing page {{ questions.page }} of {{ questions.pages }}
+      </p>
+    </div>
+    {% endblock %}
+        
