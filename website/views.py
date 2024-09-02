@@ -10,6 +10,7 @@ import base64
 import time
 from typing import Optional
 
+import os
 import requests
 
 import pyaudio
@@ -427,7 +428,7 @@ def mark_answer(token,page):
 @login_required
 def soal(token,page):
 
-    playsound('C:/Users/PC/Downloads/ExamWeb/tts/soal_'+str(token)+'_'+str(page)+'.wav')
+    playsound(os.getcwd()+'/tts/soal_'+str(token)+'_'+str(page)+'.wav')
 
     return redirect("/exam/"+str(token)+"/"+str(page))
 
@@ -435,7 +436,7 @@ def soal(token,page):
 @login_required
 def jawaban(token,page):
 
-    playsound('C:/Users/PC/Downloads/ExamWeb/tts/jawaban_'+str(token)+'_'+str(page)+'.wav')
+    playsound(os.getcwd()+'/tts/jawaban_'+str(token)+'_'+str(page)+'.wav')
 
     return redirect("/exam/"+str(token)+"/"+str(page))
 
@@ -637,12 +638,12 @@ def speech_to_text(token, page,questionid):
 
     if(final == "soal selanjutnya"):
         page = page+1
-        playsound('C:/Users/PC/Downloads/ExamWeb/tts/selanjutnya.wav')
+        playsound(os.getcwd()+'/tts/selanjutnya.wav')
         return redirect("/exam/"+str(token)+"/"+str(page))
 
     if(final == "soal sebelumnya"):
         page = page-1
-        playsound('C:/Users/PC/Downloads/ExamWeb/tts/sebelumnya.wav')
+        playsound(os.getcwd()+'/tts/sebelumnya.wav')
         return redirect("/exam/"+str(token)+"/"+str(page))
 
     if(final == "baca soal"):
@@ -654,33 +655,33 @@ def speech_to_text(token, page,questionid):
     if(final == "jawaban a"):
         answer = "A"
         submit_answer(answer)
-        playsound('C:/Users/PC/Downloads/ExamWeb/tts/jawaba.wav')
+        playsound(os.getcwd()+'/tts/jawaba.wav')
         return redirect("/exam/"+str(token)+"/"+str(page))
     
     if(final == "jawaban b"):
         answer = "B"
         submit_answer(answer)
-        playsound('C:/Users/PC/Downloads/ExamWeb/tts/jawabb.wav')
+        playsound(os.getcwd()+'/tts/jawabb.wav')
         return redirect("/exam/"+str(token)+"/"+str(page))
     
     if(final == "jawaban c" or final == "jawaban check"):
         answer = "C"
         submit_answer(answer)
-        playsound('C:/Users/PC/Downloads/ExamWeb/tts/jawabc.wav')
+        playsound(os.getcwd()+'/tts/jawabc.wav')
         return redirect("/exam/"+str(token)+"/"+str(page))
     
     if(final == "jawaban d"):
         answer = "D"
         submit_answer(answer)
-        playsound('C:/Users/PC/Downloads/ExamWeb/tts/jawabd.wav')
+        playsound(os.getcwd()+'/tts/jawabd.wav')
         return redirect("/exam/"+str(token)+"/"+str(page))
     
     if(final == "selesai ujian"):
         db_exam = Exam.query.filter_by(token=token).first()
-        playsound('C:/Users/PC/Downloads/ExamWeb/tts/selesai.wav')
+        playsound(os.getcwd()+'/tts/selesai.wav')
         return redirect("/end_exam/<"+str(db_exam.examid)+">")
     
-    playsound('C:/Users/PC/Downloads/ExamWeb/tts/gagal.wav')
+    playsound(os.getcwd()+'/tts/gagal.wav')
     return redirect("/exam/"+str(token)+"/"+str(page))
 
 '''
