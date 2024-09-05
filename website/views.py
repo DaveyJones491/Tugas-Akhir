@@ -677,9 +677,60 @@ def speech_to_text(token, page,questionid):
         return redirect("/exam/"+str(token)+"/"+str(page))
     
     if(final == "selesai ujian"):
-        db_exam = Exam.query.filter_by(token=token).first()
-        playsound(os.getcwd()+'/tts/selesai.wav')
-        return redirect("/end_exam/<"+str(db_exam.examid)+">")
+        playsound(os.getcwd()+'/tts/konfirmasi.wav')
+
+        p = pyaudio.PyAudio()  # Create an interface to PortAudio
+
+        print('Recording')
+
+        stream = p.open(format=sample_format,
+                        channels=channels,
+                        rate=fs,
+                        frames_per_buffer=chunk,
+                        input=True)
+
+        frames = []  # Initialize array to store frames
+
+        # Store data in chunks for 3 seconds
+        for i in range(0, int(fs / chunk * seconds)):
+            data = stream.read(chunk)
+            frames.append(data)
+
+        # Stop and close the stream 
+        stream.stop_stream()
+        stream.close()
+        # Terminate the PortAudio interface
+        p.terminate()
+
+        print('Finished recording')
+
+        # Save the recorded data as a WAV file
+        wf = wave.open(filename, 'wb')
+        wf.setnchannels(channels)
+        wf.setsampwidth(p.get_sample_size(sample_format))
+        wf.setframerate(fs)
+        wf.writeframes(b''.join(frames))
+        wf.close()
+
+        filename = "output.wav"
+
+        result = stt(filename)
+
+        hasil = result.get("data")
+        transcript = hasil[0]
+        final = transcript.get("transcript")
+
+        f = open("stt_result.txt", "w")
+        f.write(final)
+        f.close()
+
+        if (final == "tidak"):
+            playsound(os.getcwd()+'/tts/batal.wav')
+            return redirect("/exam/"+str(token)+"/"+str(page))
+        elif (final == "ya" or final == "iya") :
+            db_exam = Exam.query.filter_by(token=token).first()
+            playsound(os.getcwd()+'/tts/selesai.wav')
+            return redirect("/end_exam/"+str(db_exam.id))
     
     playsound(os.getcwd()+'/tts/gagal.wav')
     return redirect("/exam/"+str(token)+"/"+str(page))
