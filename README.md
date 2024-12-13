@@ -16,15 +16,25 @@ pip install -r requirements.txt
 flask
 
 Flask-SQLAlchemy
+
 flask-login
+
 datetime
+
 base64
+
 time
+
 typing
+
 werkzeug
+
 pyaudio
+
 wave
+
 requests
+
 playsound 1.2.2 (Must be 1.2.2 or will not work)
 
 ## Running The App
