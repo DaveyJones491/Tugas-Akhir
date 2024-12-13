@@ -427,7 +427,6 @@ def mark_answer(token,page):
 @views.route('/soal/<token>/<page>', methods=['GET', 'POST'])
 @login_required
 def soal(token,page):
-
     playsound(os.getcwd()+'/tts/soal_'+str(token)+'_'+str(page)+'.wav')
 
     return redirect("/exam/"+str(token)+"/"+str(page))
@@ -463,7 +462,7 @@ def result(page):
 def generate_tts(id, token, page):
         
     url = "https://api.prosa.ai/v2/speech/tts"
-    api_key = "eyJhbGciOiJSUzI1NiIsImtpZCI6Ik5XSTBNemRsTXprdE5tSmtNaTAwTTJZMkxXSTNaamN0T1dVMU5URmxObVF4Wm1KaSIsInR5cCI6IkpXVCJ9.eyJhcHBsaWNhdGlvbl9pZCI6Mzg5NTMwLCJsaWNlbnNlX2tleSI6ImQ3MjkyYTg5LTIxMjMtNGYyYy05ODE3LTBmOTI4Zjk1NmI1NiIsInVuaXF1ZV9rZXkiOiI5MjhmZTRjZi0wMjNkLTQ2MzMtYTE5My01M2RhYTVmNzgyM2IiLCJwcm9kdWN0X2lkIjozLCJhdWQiOiJhcGktc2VydmljZSIsInN1YiI6ImQzNDVkYjg2LWU5YjMtNDQwYy04NTI1LWQwOWEwMTNlYTYxNCIsImlzcyI6ImNvbnNvbGUiLCJpYXQiOjE3MjUyNDI4MjF9.hhM9bIXh0oSKqELywLEaGsv6sP3rslwK3QE_di6XTq0qDUJDCBoxsFhhhK1iqOUfnt1qzsqgqw0sKYdtDfSE3cesNU3UJ3INHCzYCrenkFSi55z0kMpPq0fsPUOeM_PaHxCixMjLFJbjQ6ZQzL-bJe7imYl4RD3w3d3hxUOD5xdd_zBz8WckZ40SjVzqN81P8JhtLoY17EZE2Gm3cvKgsIjaHFLqn-fhtUFeIfJHlhH88tB_609NNjLkc8lFncOkx321mHwdPN4GzdlrDWHP1F0EiKQvtWf3oZGq4vXzV4vvvZlssqjKFzpQCl0pkLfwFw2ieAJZCeEuVlA5VOikaA"
+    api_key = "eyJhbGciOiJSUzI1NiIsImtpZCI6Ik5XSTBNemRsTXprdE5tSmtNaTAwTTJZMkxXSTNaamN0T1dVMU5URmxObVF4Wm1KaSIsInR5cCI6IkpXVCJ9.eyJhcHBsaWNhdGlvbl9pZCI6NDEwMjk5LCJsaWNlbnNlX2tleSI6ImNjYmQxYjJhLTE1ODgtNDZlOS1iMTczLTkzYTNjZDJmYzZhZiIsInVuaXF1ZV9rZXkiOiI5MzA5M2Q4Ny0xM2JlLTRjNmYtODMyZi0zNjllM2MzOGVjZTIiLCJwcm9kdWN0X2lkIjozLCJhdWQiOiJhcGktc2VydmljZSIsInN1YiI6IjQ1NzgzYTYxLWM3NmYtNDVkMi1hOGNjLWMxNGVkMmNkZjg0YSIsImlzcyI6ImNvbnNvbGUiLCJpYXQiOjE3MzQwMTkzNzl9.SECwxHIVTeWfFGr3aUJcJ0Dk2yva33xZUdtukcn9OIk1VSueciWt6vFurLLfBQ3cgWV7aEREhxW1OHN-gxZ67vCUxNUuXX49tARNa3ZUIH_4F_l6gytD04hER_LWygtLW5zfM7q3GAQtvYd0fDWJYqX12aSuqmpur-ReWlhKvEmxMUG-xRntcH2DXvdYoDcRQAg6HiMYbBzRECvYXFNVmOChV5IZBqomJ8JjxOqbkAVfSxXGy9f8MZKoTOjkMGty_GcKb3DuC71cnmEbUdVtFP2MclK0ZWFGViu4ghRT3EhwfRZ4Npq4PcaMW7TnIkINBCLMPE10jUv6bCx3gKR90A"
 
     def submit_tts_request(text: str, audio_format: str) -> dict:
         payload = {
@@ -543,9 +542,10 @@ def speech_to_text(token, page,questionid):
  
     chunk = 1024  # Record in chunks of 1024 samples
     sample_format = pyaudio.paInt16  # 16 bits per sample
-    channels = 2
+    channels = 1
     fs = 44100  # Record at 44100 samples per second
     seconds = 3
+    input_device_index= 1
     filename = "output.wav"
 
     p = pyaudio.PyAudio()  # Create an interface to PortAudio
@@ -583,7 +583,7 @@ def speech_to_text(token, page,questionid):
 
 
     url = "https://api.prosa.ai/v2/speech/stt"
-    api_key = "eyJhbGciOiJSUzI1NiIsImtpZCI6Ik5XSTBNemRsTXprdE5tSmtNaTAwTTJZMkxXSTNaamN0T1dVMU5URmxObVF4Wm1KaSIsInR5cCI6IkpXVCJ9.eyJhcHBsaWNhdGlvbl9pZCI6Mzg5NTMxLCJsaWNlbnNlX2tleSI6ImFhZTFhZjk2LTdmZjctNDhiYy05ZTZiLTQxYmJkNTExYzU0MSIsInVuaXF1ZV9rZXkiOiIwNGRhMDBkNC0wZjE2LTQ1NWEtYjYwMS1iYTE0ZDU4NjhjYWEiLCJwcm9kdWN0X2lkIjo1LCJhdWQiOiJhcGktc2VydmljZSIsInN1YiI6ImQzNDVkYjg2LWU5YjMtNDQwYy04NTI1LWQwOWEwMTNlYTYxNCIsImlzcyI6ImNvbnNvbGUiLCJpYXQiOjE3MjUyNDI4NDN9.OgAAMzoO1TartcvaJA6cbqHTDn8Sc6T-7s8jhgFEw09djxr-0c73W8nfpRdltAiyK0WFmSITenQ8-MDURtHenvcReUi4CwD66nngqJ8VjYfKVlQXEHcCb76OqkpXTQrcdzBoxxITG1x6JzzRck8Vyegnj7Pkk5wRUxTqACX-2aH7zUsy4N4imolhZW4fFHAz80cRaRCVnjbj-tL4rilpcw2qg2xCQwdC16uuiTsbnHN09ufVHcvN9OdMNOw4Ke_Qzk0JZa9s-e0j0Ye3qyFeUtwFvU-7aCfTSls59BFBbKPf4Ve-h9hZwuwpOfG_GW5IEfTq00DgvKfhNFb6akVlzg"
+    api_key = "eyJhbGciOiJSUzI1NiIsImtpZCI6Ik5XSTBNemRsTXprdE5tSmtNaTAwTTJZMkxXSTNaamN0T1dVMU5URmxObVF4Wm1KaSIsInR5cCI6IkpXVCJ9.eyJhcHBsaWNhdGlvbl9pZCI6NDEwMjk4LCJsaWNlbnNlX2tleSI6IjFkMzdjMzZjLTUxNTUtNDU3OS1iNzcyLTFkZmQ4YTQyYTdkYSIsInVuaXF1ZV9rZXkiOiIwM2IyZjRjNy1lOGEwLTRmNWQtYTc1OC0wNWRlNzAyMDZjYjgiLCJwcm9kdWN0X2lkIjo1LCJhdWQiOiJhcGktc2VydmljZSIsInN1YiI6IjQ1NzgzYTYxLWM3NmYtNDVkMi1hOGNjLWMxNGVkMmNkZjg0YSIsImlzcyI6ImNvbnNvbGUiLCJpYXQiOjE3MzQwMTkzNzN9.PQryj95twyxIEdmYSUBXk3y3D2TeRP70TifjkbvNdqVynFG-ZtuTJjPaKWi5wu_L9JwTWAFfd7enT10o1FANEGMZBT5MvrwnOImXSMmebM5U7nPtZ2p8YeeEGPxdk-5OfL4i_YHusJ9YmeKJ0H6QBZ6P8E-3EWr1bRwO03BAs07VpkxqIufPdLRGGZre3kJgoWxWYPb-73ti3zz7PCf6WTfOSP-zyg9E-6uWnwBhcix9sSfc7jSk8OgugKSNZ_QqPo6kynTKAR2Qn24GLN4vuWtVEypqhioVqyB4B5MwYKaVsQLJv041hNU8_FdB4eF3iULJREeHOm-7NTVUxxIDgA"
 
     def stt(filename: str) -> dict:
         job = submit_stt_request(filename)
@@ -734,6 +734,115 @@ def speech_to_text(token, page,questionid):
     
     playsound(os.getcwd()+'/tts/gagal.wav')
     return redirect("/exam/"+str(token)+"/"+str(page))
+
+@views.route('/stt/nav', methods=['GET', 'POST'])
+@login_required
+def speech_to_text_nav():
+ 
+    chunk = 1024  # Record in chunks of 1024 samples
+    sample_format = pyaudio.paInt16  # 16 bits per sample
+    channels = 1
+    fs = 44100  # Record at 44100 samples per second
+    seconds = 3
+    filename = "output.wav"
+
+    p = pyaudio.PyAudio()  # Create an interface to PortAudio
+
+    print('Recording')
+
+    stream = p.open(format=sample_format,
+                    channels=channels,
+                    rate=fs,
+                    frames_per_buffer=chunk,
+                    input=True)
+
+    frames = []  # Initialize array to store frames
+
+    # Store data in chunks for 3 seconds
+    for i in range(0, int(fs / chunk * seconds)):
+        data = stream.read(chunk)
+        frames.append(data)
+
+    # Stop and close the stream 
+    stream.stop_stream()
+    stream.close()
+    # Terminate the PortAudio interface
+    p.terminate()
+
+    print('Finished recording')
+
+    # Save the recorded data as a WAV file
+    wf = wave.open(filename, 'wb')
+    wf.setnchannels(channels)
+    wf.setsampwidth(p.get_sample_size(sample_format))
+    wf.setframerate(fs)
+    wf.writeframes(b''.join(frames))
+    wf.close()
+
+
+    url = "https://api.prosa.ai/v2/speech/stt"
+    api_key = "eyJhbGciOiJSUzI1NiIsImtpZCI6Ik5XSTBNemRsTXprdE5tSmtNaTAwTTJZMkxXSTNaamN0T1dVMU5URmxObVF4Wm1KaSIsInR5cCI6IkpXVCJ9.eyJhcHBsaWNhdGlvbl9pZCI6NDEwMjk4LCJsaWNlbnNlX2tleSI6IjFkMzdjMzZjLTUxNTUtNDU3OS1iNzcyLTFkZmQ4YTQyYTdkYSIsInVuaXF1ZV9rZXkiOiIwM2IyZjRjNy1lOGEwLTRmNWQtYTc1OC0wNWRlNzAyMDZjYjgiLCJwcm9kdWN0X2lkIjo1LCJhdWQiOiJhcGktc2VydmljZSIsInN1YiI6IjQ1NzgzYTYxLWM3NmYtNDVkMi1hOGNjLWMxNGVkMmNkZjg0YSIsImlzcyI6ImNvbnNvbGUiLCJpYXQiOjE3MzQwMTkzNzN9.PQryj95twyxIEdmYSUBXk3y3D2TeRP70TifjkbvNdqVynFG-ZtuTJjPaKWi5wu_L9JwTWAFfd7enT10o1FANEGMZBT5MvrwnOImXSMmebM5U7nPtZ2p8YeeEGPxdk-5OfL4i_YHusJ9YmeKJ0H6QBZ6P8E-3EWr1bRwO03BAs07VpkxqIufPdLRGGZre3kJgoWxWYPb-73ti3zz7PCf6WTfOSP-zyg9E-6uWnwBhcix9sSfc7jSk8OgugKSNZ_QqPo6kynTKAR2Qn24GLN4vuWtVEypqhioVqyB4B5MwYKaVsQLJv041hNU8_FdB4eF3iULJREeHOm-7NTVUxxIDgA"
+
+    def stt(filename: str) -> dict:
+        job = submit_stt_request(filename)
+
+        if job["status"] == "complete":
+            return job["result"]
+
+        # Job was not completed within the timeframe
+
+
+    def submit_stt_request(filename: str) -> dict:
+        with open(filename, "rb") as f:
+            b64audio_data = base64.b64encode(f.read()).decode("utf-8")
+
+        payload = {
+            "config": {
+                "model": "stt-general",
+                "wait": True  # Blocks the request until the execution is finished
+            },
+            "request": {
+                "data": b64audio_data
+            }
+        }
+
+        response = requests.post(url, json=payload, headers={
+            "x-api-key": api_key
+        })
+
+        return response.json()
+
+    filename = "output.wav"
+
+    result = stt(filename)
+
+    hasil = result.get("data")
+    transcript = hasil[0]
+    final = transcript.get("transcript")
+
+    f = open("stt_result.txt", "w")
+    f.write(final)
+    f.close()
+
+    if(final == "utama"):
+        #playsound(os.getcwd()+'/tts/awal.wav')
+        return redirect("/")
+    
+    if(final =="ujian"):
+        #playsound(os.getcwd()+'/tts/ujian.wav')
+        return redirect("/insert_token")
+
+    if(final =="hasil ujian"):
+        #playsound(os.getcwd()+'/tts/hasil_ujian.wav')
+        return redirect("/result/1")
+    
+    if(final =="keluar"):
+        #playsound(os.getcwd()+'/tts/hasil_ujian.wav')
+        return redirect("/logout")
+
+    playsound(os.getcwd()+'/tts/gagal.wav')
+    return redirect("/")
+
 
 '''
 
