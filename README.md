@@ -14,6 +14,7 @@ pip install -r requirements.txt
 
 ## Dependencies 
 flask
+
 Flask-SQLAlchemy
 flask-login
 datetime
