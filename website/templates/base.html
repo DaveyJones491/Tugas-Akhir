@@ -34,13 +34,13 @@
             Halo, {{user.name}}
           </span>
           <a class="nav-item nav-link" id="home" href="/">Home</a>
-            {% if user.type =='admin' %}
+          <a class="nav-item nav-link" id="exam" href="/insert_token">Ujian</a>
+          <a class="nav-item nav-link" id="exam" href="/result/1">Hasil Ujian</a>
+          {% if user.type =='admin' %}
             <a class="nav-item nav-link" id="account_list" href="/list_account/1">List Akun</a>
             <a class="nav-item nav-link" id="exam_list" href="/list_exam/1">List Ujian</a>
             <a class="nav-item nav-link" id="exam_list" href="/list_result/1">List Hasil Ujian</a>
             {% endif %} 
-          <a class="nav-item nav-link" id="exam" href="/insert_token">Ujian</a>
-          <a class="nav-item nav-link" id="exam" href="/result/1">Hasil Ujian</a>
           <a class="nav-item nav-link" id="logout" href="/logout">Logout</a>
           {% else %}
           <a class="nav-item nav-link" id="login" href="/login">Login</a>
@@ -89,6 +89,7 @@ $('#content').keydown( function(event){
   var key = event.keyCode || event.which;
   if(key == 27)
   {
+  console.log("test")
   document.getElementById("stt").click();
   }
 });

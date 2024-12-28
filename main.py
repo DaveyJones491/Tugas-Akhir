@@ -8,7 +8,7 @@ if __name__ == '__main__':
 
 '''
 List Command : 
-- Soal / Baca Soal (TTS)
+- Soal / Baca Soal (TTS)    
 - Jawaban / Baca Jawaban (TTS)
 - Selanjutnya / Maju / Soal Selanjutnya (NAV), baca soal saat pindah
 - Sebelumnya / Mundur / Soal Selanjutnya (NAV), baca soal saat pindah

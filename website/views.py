@@ -720,7 +720,10 @@ def speech_to_text(token, page,questionid):
         result = stt(filename)
 
         hasil = result.get("data")
-        transcript = hasil[0]
+        if (hasil == None):
+            transcript=""
+        else:
+            transcript = hasil[0]
         final = transcript.get("transcript")
 
         f = open("stt_result.txt", "w")
