@@ -363,6 +363,7 @@ def start_exam(token):
 @views.route('/exam/<token>/<page>', methods=['GET', 'POST'])
 @login_required
 def exam(token,page):
+
     db_exam = Exam.query.filter_by(token=token).first()
     
     check_result = Result.query.filter_by(user_id=current_user.id, exam_id=db_exam.id).first()
@@ -396,6 +397,8 @@ def exam(token,page):
     if db_answer :
         db_answer = db_answer.answer
     
+    playsound(os.getcwd()+'/tts/soal_'+str(token)+'_'+str(page)+'.wav')
+    playsound(os.getcwd()+'/tts/jawaban_'+str(token)+'_'+str(page)+'.wav')
     return render_template("exam.html", user=current_user, questions=db_question, exams=db_exam, page=page, select=db_answer)#, kelas=db_class)
 
 @views.route('/end_exam/<examid>', methods=['GET', 'POST'])
@@ -551,6 +554,7 @@ def speech_to_text(token, page,questionid):
     p = pyaudio.PyAudio()  # Create an interface to PortAudio
 
     print('Recording')
+    playsound(os.getcwd()+'/tts/Beep.mp3')
 
     stream = p.open(format=sample_format,
                     channels=channels,
@@ -572,6 +576,7 @@ def speech_to_text(token, page,questionid):
     p.terminate()
 
     print('Finished recording')
+    playsound(os.getcwd()+'/tts/Beep.mp3')
 
     # Save the recorded data as a WAV file
     wf = wave.open(filename, 'wb')
@@ -655,6 +660,10 @@ def speech_to_text(token, page,questionid):
     if(final == "baca jawaban"):
         return redirect("/jawaban/"+str(token)+"/"+str(page))
 
+    if(final == "baca semua"):
+        playsound(os.getcwd()+'/tts/soal_'+str(token)+'_'+str(page)+'.wav')
+        return redirect("/jawaban/"+str(token)+"/"+str(page))    
+
     if(final == "jawaban a"):
         answer = "A"
         submit_answer(answer)
@@ -685,6 +694,7 @@ def speech_to_text(token, page,questionid):
         p = pyaudio.PyAudio()  # Create an interface to PortAudio
 
         print('Recording')
+        playsound(os.getcwd()+'/tts/Beep.mp3')
 
         stream = p.open(format=sample_format,
                         channels=channels,
@@ -706,6 +716,7 @@ def speech_to_text(token, page,questionid):
         p.terminate()
 
         print('Finished recording')
+        playsound(os.getcwd()+'/tts/Beep.mp3')
 
         # Save the recorded data as a WAV file
         wf = wave.open(filename, 'wb')
@@ -755,6 +766,7 @@ def speech_to_text_nav():
     p = pyaudio.PyAudio()  # Create an interface to PortAudio
 
     print('Recording')
+    playsound(os.getcwd()+'/tts/Beep.mp3')
 
     stream = p.open(format=sample_format,
                     channels=channels,
@@ -776,6 +788,7 @@ def speech_to_text_nav():
     p.terminate()
 
     print('Finished recording')
+    playsound(os.getcwd()+'/tts/Beep.mp3')
 
     # Save the recorded data as a WAV file
     wf = wave.open(filename, 'wb')
