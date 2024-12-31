@@ -673,10 +673,9 @@ def speech_to_text(token, page,questionid):
             return redirect("/exam/"+str(token)+"/"+str(page-1))
 
     if(final == "soal sebelumnya" or final =="sebelumnya"):
-        db_exam = Exam.query.filter_by(token=token).first()
-        db_answer = UserAnswer.query.filter_by(user_id=current_user.id, exam_id=db_exam.id)
+
         page = page-1
-        if (db_answer.count()<=page):
+        if (page != 0):
             playsound(os.getcwd()+'/tts/sebelumnya.wav')
             playsound(os.getcwd()+'/tts/soal_'+str(token)+'_'+str(page)+'.wav')
             playsound(os.getcwd()+'/tts/jawaban_'+str(token)+'_'+str(page)+'.wav')
@@ -789,6 +788,9 @@ def speech_to_text(token, page,questionid):
     playsound(os.getcwd()+'/tts/gagal.wav')
     return redirect("/exam/"+str(token)+"/"+str(page))
 
+
+#=======================================================================================================================
+
 @views.route('/stt/nav/<page>', methods=['GET', 'POST'])
 @login_required
 def speech_to_text_nav(page):
@@ -900,9 +902,9 @@ def speech_to_text_nav(page):
     
     if(final =="bantuan"):
         playsound(os.getcwd()+'/tts/BantuanNavigasi.wav')
-        if(page == 1):
+        if(page == str(1)):
             return redirect("/")
-        if(page == 2):
+        if(page == str(2)):
             return redirect("/result/1")
 
 
@@ -911,12 +913,13 @@ def speech_to_text_nav(page):
         return redirect("/logout")
 
     playsound(os.getcwd()+'/tts/gagal.wav')
-    if(page == 1):
+    print(page)
+    if(page == str(1)):
         return redirect("/")
-    if(page == 2):
+    if(page == str(2)):
         return redirect("/result/1")
     
-    
+    return redirect("/")
 
 @views.route('/stt/token', methods=['GET', 'POST'])
 @login_required
