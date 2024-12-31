@@ -660,18 +660,30 @@ def speech_to_text(token, page,questionid):
         return redirect("/exam/"+str(token)+"/"+str(page))
 
     if(final == "soal selanjutnya" or final =="selanjutnya"):
+        db_exam = Exam.query.filter_by(token=token).first()
+        db_answer = UserAnswer.query.filter_by(user_id=current_user.id, exam_id=db_exam.id)
         page = page+1
-        playsound(os.getcwd()+'/tts/selanjutnya.wav')
-        playsound(os.getcwd()+'/tts/soal_'+str(token)+'_'+str(page)+'.wav')
-        playsound(os.getcwd()+'/tts/jawaban_'+str(token)+'_'+str(page)+'.wav')
-        return redirect("/exam/"+str(token)+"/"+str(page))
+        if (db_answer.count()>=page):
+            playsound(os.getcwd()+'/tts/selanjutnya.wav')
+            playsound(os.getcwd()+'/tts/soal_'+str(token)+'_'+str(page)+'.wav')
+            playsound(os.getcwd()+'/tts/jawaban_'+str(token)+'_'+str(page)+'.wav')
+            return redirect("/exam/"+str(token)+"/"+str(page))
+        else:
+            playsound(os.getcwd()+'/tts/SoalTerakhir.wav')
+            return redirect("/exam/"+str(token)+"/"+str(page-1))
 
     if(final == "soal sebelumnya" or final =="sebelumnya"):
+        db_exam = Exam.query.filter_by(token=token).first()
+        db_answer = UserAnswer.query.filter_by(user_id=current_user.id, exam_id=db_exam.id)
         page = page-1
-        playsound(os.getcwd()+'/tts/sebelumnya.wav')
-        playsound(os.getcwd()+'/tts/soal_'+str(token)+'_'+str(page)+'.wav')
-        playsound(os.getcwd()+'/tts/jawaban_'+str(token)+'_'+str(page)+'.wav')
-        return redirect("/exam/"+str(token)+"/"+str(page))
+        if (db_answer.count()<=page):
+            playsound(os.getcwd()+'/tts/sebelumnya.wav')
+            playsound(os.getcwd()+'/tts/soal_'+str(token)+'_'+str(page)+'.wav')
+            playsound(os.getcwd()+'/tts/jawaban_'+str(token)+'_'+str(page)+'.wav')
+            return redirect("/exam/"+str(token)+"/"+str(page))
+        else:
+            playsound(os.getcwd()+'/tts/SoalPertama.wav')
+            return redirect("/exam/"+str(token)+"/"+str(page+1))
 
     if(final == "baca semua"):
         playsound(os.getcwd()+'/tts/soal_'+str(token)+'_'+str(page)+'.wav')
