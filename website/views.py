@@ -317,6 +317,7 @@ def edit_question(id):
                 db_question.answer2 = answer2
                 db_question.answer3 = answer3
                 db_question.answer4 = answer4
+                db_question.correct = correct
                 db.session.commit()
                 flash('Pertanyaan berhasil diedit!', category='success')
         
@@ -349,7 +350,8 @@ def insert_token():
         elif db_exam:
             return redirect(("/start_exam/")+str(token))
         else : 
-            flash('Tidak ada ujian dengan token tersebut!', category='error') 
+            flash('Tidak ada ujian dengan token tersebut!', category='error')
+    
     
     return render_template("insert_token.html", user=current_user)
         
@@ -357,7 +359,12 @@ def insert_token():
 @login_required
 def start_exam(token):
     db_exam = Exam.query.filter_by(token=token).first()
+    check_result = Result.query.filter_by(user_id=current_user.id, exam_id=db_exam.id).first()
+    if check_result:
+        flash('Anda sudah pernah mengerjakan ujian tersebut!', category='error')
+        return redirect("/insert_token")
     
+    playsound(os.getcwd()+'/tts/jumlah_'+str(token)+'.wav')
     return render_template("start_exam.html", user=current_user, exams=db_exam)
     
 @views.route('/exam/<token>/<page>', methods=['GET', 'POST'])
@@ -365,11 +372,6 @@ def start_exam(token):
 def exam(token,page):
 
     db_exam = Exam.query.filter_by(token=token).first()
-    
-    check_result = Result.query.filter_by(user_id=current_user.id, exam_id=db_exam.id).first()
-    if check_result:
-        flash('Anda sudah pernah mengerjakan ujian tersebut!', category='error')
-        return redirect("/insert_token")
 
     get_question = Question.query.filter_by(exam_id=db_exam.id)
     db_question = get_question.paginate(page=int(page), per_page=1)
@@ -397,8 +399,6 @@ def exam(token,page):
     if db_answer :
         db_answer = db_answer.answer
     
-    playsound(os.getcwd()+'/tts/soal_'+str(token)+'_'+str(page)+'.wav')
-    playsound(os.getcwd()+'/tts/jawaban_'+str(token)+'_'+str(page)+'.wav')
     return render_template("exam.html", user=current_user, questions=db_question, exams=db_exam, page=page, select=db_answer)#, kelas=db_class)
 
 @views.route('/end_exam/<examid>', methods=['GET', 'POST'])
@@ -414,7 +414,7 @@ def end_exam(examid):
     for i in range (count) :
         if (db_correct[i].correct == db_answer[i].answer):
             correct += 1
-    print(correct)
+
     db.session.add(Result(user_id=current_user.id, user_name=current_user.name, exam_id=examid, exam_name=db_exam.name, grade=(correct/count*100)))
     db.session.commit()
     flash('Ujian berhasil disubmit!', category='success')
@@ -517,6 +517,15 @@ def generate_tts(id, token, page):
             time.sleep(poll_interval)    
     
     db_question = Question.query.filter_by(exam_id=id)
+
+    count = db_question.count()
+    jumlah_filename="tts/jumlah_"+str(token)+".wav"
+    jumlah = (str("Ujian memiliki "+str(count)+" soal"))
+
+    jumlah_data = tts(jumlah, "opus")
+
+    with open(jumlah_filename, "wb") as f:
+        f.write(jumlah_data)
 
     for i in range (db_question.count()) :
 
@@ -624,11 +633,13 @@ def speech_to_text(token, page,questionid):
     result = stt(filename)
 
     hasil = result.get("data")
-    if (hasil == None):
+    print(hasil)
+    if (len(hasil) == 0):
         transcript=""
+        final = transcript
     else:
         transcript = hasil[0]
-    final = transcript.get("transcript")
+        final = transcript.get("transcript")
 
     f = open("stt_result.txt", "w")
     f.write(final)
@@ -644,25 +655,37 @@ def speech_to_text(token, page,questionid):
             db_answer.answer = answer
             db.session.commit()
 
-    if(final == "soal selanjutnya"):
-        page = page+1
-        playsound(os.getcwd()+'/tts/selanjutnya.wav')
+    if(final == "bantuan"):
+        playsound(os.getcwd()+'/tts/BantuanUjian.wav')
         return redirect("/exam/"+str(token)+"/"+str(page))
 
-    if(final == "soal sebelumnya"):
+    if(final == "soal selanjutnya" or final =="selanjutnya"):
+        page = page+1
+        playsound(os.getcwd()+'/tts/selanjutnya.wav')
+        playsound(os.getcwd()+'/tts/soal_'+str(token)+'_'+str(page)+'.wav')
+        playsound(os.getcwd()+'/tts/jawaban_'+str(token)+'_'+str(page)+'.wav')
+        return redirect("/exam/"+str(token)+"/"+str(page))
+
+    if(final == "soal sebelumnya" or final =="sebelumnya"):
         page = page-1
         playsound(os.getcwd()+'/tts/sebelumnya.wav')
+        playsound(os.getcwd()+'/tts/soal_'+str(token)+'_'+str(page)+'.wav')
+        playsound(os.getcwd()+'/tts/jawaban_'+str(token)+'_'+str(page)+'.wav')
         return redirect("/exam/"+str(token)+"/"+str(page))
+
+    if(final == "baca semua"):
+        playsound(os.getcwd()+'/tts/soal_'+str(token)+'_'+str(page)+'.wav')
+        return redirect("/jawaban/"+str(token)+"/"+str(page)) 
 
     if(final == "baca soal"):
         return redirect("/soal/"+str(token)+"/"+str(page))
     
     if(final == "baca jawaban"):
         return redirect("/jawaban/"+str(token)+"/"+str(page))
-
-    if(final == "baca semua"):
-        playsound(os.getcwd()+'/tts/soal_'+str(token)+'_'+str(page)+'.wav')
-        return redirect("/jawaban/"+str(token)+"/"+str(page))    
+    
+    if (final == "jumlah soal"):
+        playsound(os.getcwd()+'/tts/jumlah_'+str(token)+'.wav')
+        return redirect("/exam/"+str(token)+"/"+str(page))
 
     if(final == "jawaban a"):
         answer = "A"
@@ -731,11 +754,13 @@ def speech_to_text(token, page,questionid):
         result = stt(filename)
 
         hasil = result.get("data")
-        if (hasil == None):
+        print(hasil)
+        if (len(hasil) == 0):
             transcript=""
+            final = transcript
         else:
             transcript = hasil[0]
-        final = transcript.get("transcript")
+            final = transcript.get("transcript")
 
         f = open("stt_result.txt", "w")
         f.write(final)
@@ -752,9 +777,9 @@ def speech_to_text(token, page,questionid):
     playsound(os.getcwd()+'/tts/gagal.wav')
     return redirect("/exam/"+str(token)+"/"+str(page))
 
-@views.route('/stt/nav', methods=['GET', 'POST'])
+@views.route('/stt/nav/<page>', methods=['GET', 'POST'])
 @login_required
-def speech_to_text_nav():
+def speech_to_text_nav(page):
  
     chunk = 1024  # Record in chunks of 1024 samples
     sample_format = pyaudio.paInt16  # 16 bits per sample
@@ -836,35 +861,169 @@ def speech_to_text_nav():
     result = stt(filename)
 
     hasil = result.get("data")
-    if (hasil == None):
+    print(hasil)
+    if (len(hasil) == 0):
         transcript=""
+        final = transcript
     else:
         transcript = hasil[0]
-    final = transcript.get("transcript")
+        final = transcript.get("transcript")
+    
 
     f = open("stt_result.txt", "w")
     f.write(final)
     f.close()
 
     if(final == "utama"):
-        #playsound(os.getcwd()+'/tts/awal.wav')
+        playsound(os.getcwd()+'/tts/Utama.wav')
         return redirect("/")
     
     if(final =="ujian"):
-        #playsound(os.getcwd()+'/tts/ujian.wav')
+        playsound(os.getcwd()+'/tts/Token.wav')
         return redirect("/insert_token")
 
     if(final =="hasil ujian"):
-        #playsound(os.getcwd()+'/tts/hasil_ujian.wav')
+        playsound(os.getcwd()+'/tts/Hasil.wav')
         return redirect("/result/1")
     
+    if(final =="bantuan"):
+        playsound(os.getcwd()+'/tts/BantuanNavigasi.wav')
+        if(page == 1):
+            return redirect("/")
+        if(page == 2):
+            return redirect("/result/1")
+
+
     if(final =="keluar"):
-        #playsound(os.getcwd()+'/tts/hasil_ujian.wav')
+        playsound(os.getcwd()+'/tts/Keluar.wav')
         return redirect("/logout")
 
     playsound(os.getcwd()+'/tts/gagal.wav')
-    return redirect("/")
+    if(page == 1):
+        return redirect("/")
+    if(page == 2):
+        return redirect("/result/1")
+    
+    
 
+@views.route('/stt/token', methods=['GET', 'POST'])
+@login_required
+def speech_to_text_token():
+ 
+    chunk = 1024  # Record in chunks of 1024 samples
+    sample_format = pyaudio.paInt16  # 16 bits per sample
+    channels = 1
+    fs = 44100  # Record at 44100 samples per second
+    seconds = 3
+    filename = "output.wav"
+
+    p = pyaudio.PyAudio()  # Create an interface to PortAudio
+
+    print('Recording')
+    playsound(os.getcwd()+'/tts/Beep.mp3')
+
+    stream = p.open(format=sample_format,
+                    channels=channels,
+                    rate=fs,
+                    frames_per_buffer=chunk,
+                    input=True)
+
+    frames = []  # Initialize array to store frames
+
+    # Store data in chunks for 3 seconds
+    for i in range(0, int(fs / chunk * seconds)):
+        data = stream.read(chunk)
+        frames.append(data)
+
+    # Stop and close the stream 
+    stream.stop_stream()
+    stream.close()
+    # Terminate the PortAudio interface
+    p.terminate()
+
+    print('Finished recording')
+    playsound(os.getcwd()+'/tts/Beep.mp3')
+
+    # Save the recorded data as a WAV file
+    wf = wave.open(filename, 'wb')
+    wf.setnchannels(channels)
+    wf.setsampwidth(p.get_sample_size(sample_format))
+    wf.setframerate(fs)
+    wf.writeframes(b''.join(frames))
+    wf.close()
+
+
+    url = "https://api.prosa.ai/v2/speech/stt"
+    api_key = "eyJhbGciOiJSUzI1NiIsImtpZCI6Ik5XSTBNemRsTXprdE5tSmtNaTAwTTJZMkxXSTNaamN0T1dVMU5URmxObVF4Wm1KaSIsInR5cCI6IkpXVCJ9.eyJhcHBsaWNhdGlvbl9pZCI6NDEwMjk4LCJsaWNlbnNlX2tleSI6IjFkMzdjMzZjLTUxNTUtNDU3OS1iNzcyLTFkZmQ4YTQyYTdkYSIsInVuaXF1ZV9rZXkiOiIwM2IyZjRjNy1lOGEwLTRmNWQtYTc1OC0wNWRlNzAyMDZjYjgiLCJwcm9kdWN0X2lkIjo1LCJhdWQiOiJhcGktc2VydmljZSIsInN1YiI6IjQ1NzgzYTYxLWM3NmYtNDVkMi1hOGNjLWMxNGVkMmNkZjg0YSIsImlzcyI6ImNvbnNvbGUiLCJpYXQiOjE3MzQwMTkzNzN9.PQryj95twyxIEdmYSUBXk3y3D2TeRP70TifjkbvNdqVynFG-ZtuTJjPaKWi5wu_L9JwTWAFfd7enT10o1FANEGMZBT5MvrwnOImXSMmebM5U7nPtZ2p8YeeEGPxdk-5OfL4i_YHusJ9YmeKJ0H6QBZ6P8E-3EWr1bRwO03BAs07VpkxqIufPdLRGGZre3kJgoWxWYPb-73ti3zz7PCf6WTfOSP-zyg9E-6uWnwBhcix9sSfc7jSk8OgugKSNZ_QqPo6kynTKAR2Qn24GLN4vuWtVEypqhioVqyB4B5MwYKaVsQLJv041hNU8_FdB4eF3iULJREeHOm-7NTVUxxIDgA"
+
+    def stt(filename: str) -> dict:
+        job = submit_stt_request(filename)
+
+        if job["status"] == "complete":
+            return job["result"]
+
+        # Job was not completed within the timeframe
+
+
+    def submit_stt_request(filename: str) -> dict:
+        with open(filename, "rb") as f:
+            b64audio_data = base64.b64encode(f.read()).decode("utf-8")
+
+        payload = {
+            "config": {
+                "model": "stt-general",
+                "wait": True  # Blocks the request until the execution is finished
+            },
+            "request": {
+                "data": b64audio_data
+            }
+        }
+
+        response = requests.post(url, json=payload, headers={
+            "x-api-key": api_key
+        })
+
+        return response.json()
+
+    filename = "output.wav"
+
+    result = stt(filename)
+
+    hasil = result.get("data")
+    print(hasil)
+    if (len(hasil) == 0):
+        transcript=""
+        final = transcript
+    else:
+        transcript = hasil[0]
+        final = transcript.get("transcript")
+
+    f = open("stt_result.txt", "w")
+    f.write(final)
+    f.close()
+
+    if(final == "utama"):
+        playsound(os.getcwd()+'/tts/Utama.wav')
+        return redirect("/")
+    
+    if(final =="ujian"):
+        playsound(os.getcwd()+'/tts/Ujian.wav')
+        return redirect("/insert_token")
+
+    if(final =="hasil ujian"):
+        playsound(os.getcwd()+'/tts/Hasil.wav')
+        return redirect("/result/1")
+    
+    if(final =="keluar"):
+        playsound(os.getcwd()+'/tts/Keluar.wav')
+        return redirect("/logout")
+
+    if(final =="bantuan"):
+        playsound(os.getcwd()+'/tts/BantuanNavigasi.wav')
+        return redirect("/insert_token")
+
+    playsound(os.getcwd()+'/tts/gagal.wav')
+    return redirect("/insert_token")
 
 '''
 

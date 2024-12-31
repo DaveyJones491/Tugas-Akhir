@@ -81,14 +81,10 @@
     ></script>
 
 <script>
-$('#content').keydown( function(event){
-  var key = event.keyCode || event.which;
-  if(key == 27)
-  {
-  console.log("test")
-  document.getElementById("stt").click();
-  }
-});
+document.addEventListener('keydown', STT);
+function STT(e) {
+    if (event.keyCode == 27) { document.getElementById("stt").click(); }
+}    
 
 </script>
   <br>
