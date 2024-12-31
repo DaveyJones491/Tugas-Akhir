@@ -32,7 +32,7 @@ content %}
         <a class="btn btn-danger" href="/delete_exam/{{exam.id}}/{{exams.page}}"
         onclick="return confirm('Apakah anda yakin akan menghapus ujian {{ exam.name }}?');" title="Delete">
         Hapus</a>
-        <a type="button" class="btn btn-success" href="/generate_tts/{{exam.id}}/{{exam.token}}/{{exams.page}}">Generate TTS</a>
+        <a type="button" class="btn btn-success" href="/generate_tts/{{exam.id}}/{{exam.token}}/{{exams.page}}">Buat File Suara</a>
       </td>
     </tbody>
     {% endfor %}
