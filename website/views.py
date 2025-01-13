@@ -465,7 +465,7 @@ def result(page):
 def generate_tts(id, token, page):
         
     url = "https://api.prosa.ai/v2/speech/tts"
-    api_key = "eyJhbGciOiJSUzI1NiIsImtpZCI6Ik5XSTBNemRsTXprdE5tSmtNaTAwTTJZMkxXSTNaamN0T1dVMU5URmxObVF4Wm1KaSIsInR5cCI6IkpXVCJ9.eyJhcHBsaWNhdGlvbl9pZCI6NDEwMjk5LCJsaWNlbnNlX2tleSI6ImNjYmQxYjJhLTE1ODgtNDZlOS1iMTczLTkzYTNjZDJmYzZhZiIsInVuaXF1ZV9rZXkiOiI5MzA5M2Q4Ny0xM2JlLTRjNmYtODMyZi0zNjllM2MzOGVjZTIiLCJwcm9kdWN0X2lkIjozLCJhdWQiOiJhcGktc2VydmljZSIsInN1YiI6IjQ1NzgzYTYxLWM3NmYtNDVkMi1hOGNjLWMxNGVkMmNkZjg0YSIsImlzcyI6ImNvbnNvbGUiLCJpYXQiOjE3MzQwMTkzNzl9.SECwxHIVTeWfFGr3aUJcJ0Dk2yva33xZUdtukcn9OIk1VSueciWt6vFurLLfBQ3cgWV7aEREhxW1OHN-gxZ67vCUxNUuXX49tARNa3ZUIH_4F_l6gytD04hER_LWygtLW5zfM7q3GAQtvYd0fDWJYqX12aSuqmpur-ReWlhKvEmxMUG-xRntcH2DXvdYoDcRQAg6HiMYbBzRECvYXFNVmOChV5IZBqomJ8JjxOqbkAVfSxXGy9f8MZKoTOjkMGty_GcKb3DuC71cnmEbUdVtFP2MclK0ZWFGViu4ghRT3EhwfRZ4Npq4PcaMW7TnIkINBCLMPE10jUv6bCx3gKR90A"
+    api_key = "eyJhbGciOiJSUzI1NiIsImtpZCI6Ik5XSTBNemRsTXprdE5tSmtNaTAwTTJZMkxXSTNaamN0T1dVMU5URmxObVF4Wm1KaSIsInR5cCI6IkpXVCJ9.eyJhcHBsaWNhdGlvbl9pZCI6NDE1NDczLCJsaWNlbnNlX2tleSI6IjgzMmEyM2YzLWYyZjAtNGE2OS1iMGVlLWE5MTE0MmM2YzBiNyIsInVuaXF1ZV9rZXkiOiIyZGEyZTIwNC05NjM1LTQ0YzYtYjA5MC1lMjZiYmFiNzNmOTYiLCJwcm9kdWN0X2lkIjozLCJhdWQiOiJhcGktc2VydmljZSIsInN1YiI6IjI4YjhkYTZmLTAzYTUtNDhlNC04NjMxLTRiYzE0NjRlNjZhNyIsImlzcyI6ImNvbnNvbGUiLCJpYXQiOjE3MzY3MzQwODN9.UX9JSh-gJ71pH57M-8Is1vkK4A7nXIOkD-cjH_XaFdSfwbARRh4jiNrAKBpv_laPf6IXnUKG2LGjKGGuUBOdjQHWiPY7cck64e6CxgjAHRQgyJLBp95OwzwsE1tiwkCjdjo-vQpcO_eeuAKJ1RjpZvAafnjLNSit0AlrB_Y4cdWJKQti_1XySCGRRBRzR3x4bj9fN-i4qASjg30uVIRntzyIbA659I_lTBRQK--V91iWbJlu3E4uFxSklYua-VYbiYsV4oWsafBSkmuekhw3LWg6tH6rVWyvtk2P8iRMdx8nryjYRJi-64GKMOCPjSNV-1Sy407woZ3kAtFYiIsY2Q"
 
     def submit_tts_request(text: str, audio_format: str) -> dict:
         payload = {
@@ -597,7 +597,7 @@ def speech_to_text(token, page,questionid):
 
 
     url = "https://api.prosa.ai/v2/speech/stt"
-    api_key = "eyJhbGciOiJSUzI1NiIsImtpZCI6Ik5XSTBNemRsTXprdE5tSmtNaTAwTTJZMkxXSTNaamN0T1dVMU5URmxObVF4Wm1KaSIsInR5cCI6IkpXVCJ9.eyJhcHBsaWNhdGlvbl9pZCI6NDEwMjk4LCJsaWNlbnNlX2tleSI6IjFkMzdjMzZjLTUxNTUtNDU3OS1iNzcyLTFkZmQ4YTQyYTdkYSIsInVuaXF1ZV9rZXkiOiIwM2IyZjRjNy1lOGEwLTRmNWQtYTc1OC0wNWRlNzAyMDZjYjgiLCJwcm9kdWN0X2lkIjo1LCJhdWQiOiJhcGktc2VydmljZSIsInN1YiI6IjQ1NzgzYTYxLWM3NmYtNDVkMi1hOGNjLWMxNGVkMmNkZjg0YSIsImlzcyI6ImNvbnNvbGUiLCJpYXQiOjE3MzQwMTkzNzN9.PQryj95twyxIEdmYSUBXk3y3D2TeRP70TifjkbvNdqVynFG-ZtuTJjPaKWi5wu_L9JwTWAFfd7enT10o1FANEGMZBT5MvrwnOImXSMmebM5U7nPtZ2p8YeeEGPxdk-5OfL4i_YHusJ9YmeKJ0H6QBZ6P8E-3EWr1bRwO03BAs07VpkxqIufPdLRGGZre3kJgoWxWYPb-73ti3zz7PCf6WTfOSP-zyg9E-6uWnwBhcix9sSfc7jSk8OgugKSNZ_QqPo6kynTKAR2Qn24GLN4vuWtVEypqhioVqyB4B5MwYKaVsQLJv041hNU8_FdB4eF3iULJREeHOm-7NTVUxxIDgA"
+    api_key = "eyJhbGciOiJSUzI1NiIsImtpZCI6Ik5XSTBNemRsTXprdE5tSmtNaTAwTTJZMkxXSTNaamN0T1dVMU5URmxObVF4Wm1KaSIsInR5cCI6IkpXVCJ9.eyJhcHBsaWNhdGlvbl9pZCI6NDE1NDc0LCJsaWNlbnNlX2tleSI6IjY5MzU1NzJmLWFmZGMtNGMwMC04YjdlLTgyMWQ5NTFiZmZiMiIsInVuaXF1ZV9rZXkiOiIxYWRiODBmOS1lOGIwLTQwMmEtYjk3Ni1iNTQ3YTBmNWNhYzQiLCJwcm9kdWN0X2lkIjo1LCJhdWQiOiJhcGktc2VydmljZSIsInN1YiI6IjI4YjhkYTZmLTAzYTUtNDhlNC04NjMxLTRiYzE0NjRlNjZhNyIsImlzcyI6ImNvbnNvbGUiLCJpYXQiOjE3MzY3MzQwODZ9.kQkT46keVLlsO8U7clPOLf7uOHxUxelT9kSqmg-eNXmfd_Zi1qrarNnLWgSSqEgoBH33Jay23q9pt-03AWkwa5S0hR9RQORPzq639W3A5FlU23ZEo29s75tckl_Nrv3BLCKjIoI2VxyHn2bk7GpArmIk4sQHUIKRjgYZeVE9G1GEWhGY_HM7ShglwEk8DejpY_YxBVMJqRQsM6EKdqQhEADmhlqXWUW-ErY7ILO_cwXmzAwCblYIS7aCpVKt4X1eMLebKIx_XG_ZwpKyzVIDrqAU8HbWvHsjfD4INJo4ukpC0ErUQsxygr9yzwriMSO0wEMePQCYyT2n9c8CahFaig"
 
     def stt(filename: str) -> dict:
         job = submit_stt_request(filename)
@@ -789,7 +789,7 @@ def speech_to_text(token, page,questionid):
     return redirect("/exam/"+str(token)+"/"+str(page))
 
 
-#=======================================================================================================================
+#=================================================STT Nav======================================================================
 
 @views.route('/stt/nav/<page>', methods=['GET', 'POST'])
 @login_required
@@ -839,7 +839,7 @@ def speech_to_text_nav(page):
 
 
     url = "https://api.prosa.ai/v2/speech/stt"
-    api_key = "eyJhbGciOiJSUzI1NiIsImtpZCI6Ik5XSTBNemRsTXprdE5tSmtNaTAwTTJZMkxXSTNaamN0T1dVMU5URmxObVF4Wm1KaSIsInR5cCI6IkpXVCJ9.eyJhcHBsaWNhdGlvbl9pZCI6NDEwMjk4LCJsaWNlbnNlX2tleSI6IjFkMzdjMzZjLTUxNTUtNDU3OS1iNzcyLTFkZmQ4YTQyYTdkYSIsInVuaXF1ZV9rZXkiOiIwM2IyZjRjNy1lOGEwLTRmNWQtYTc1OC0wNWRlNzAyMDZjYjgiLCJwcm9kdWN0X2lkIjo1LCJhdWQiOiJhcGktc2VydmljZSIsInN1YiI6IjQ1NzgzYTYxLWM3NmYtNDVkMi1hOGNjLWMxNGVkMmNkZjg0YSIsImlzcyI6ImNvbnNvbGUiLCJpYXQiOjE3MzQwMTkzNzN9.PQryj95twyxIEdmYSUBXk3y3D2TeRP70TifjkbvNdqVynFG-ZtuTJjPaKWi5wu_L9JwTWAFfd7enT10o1FANEGMZBT5MvrwnOImXSMmebM5U7nPtZ2p8YeeEGPxdk-5OfL4i_YHusJ9YmeKJ0H6QBZ6P8E-3EWr1bRwO03BAs07VpkxqIufPdLRGGZre3kJgoWxWYPb-73ti3zz7PCf6WTfOSP-zyg9E-6uWnwBhcix9sSfc7jSk8OgugKSNZ_QqPo6kynTKAR2Qn24GLN4vuWtVEypqhioVqyB4B5MwYKaVsQLJv041hNU8_FdB4eF3iULJREeHOm-7NTVUxxIDgA"
+    api_key = "eyJhbGciOiJSUzI1NiIsImtpZCI6Ik5XSTBNemRsTXprdE5tSmtNaTAwTTJZMkxXSTNaamN0T1dVMU5URmxObVF4Wm1KaSIsInR5cCI6IkpXVCJ9.eyJhcHBsaWNhdGlvbl9pZCI6NDE1NDc0LCJsaWNlbnNlX2tleSI6IjY5MzU1NzJmLWFmZGMtNGMwMC04YjdlLTgyMWQ5NTFiZmZiMiIsInVuaXF1ZV9rZXkiOiIxYWRiODBmOS1lOGIwLTQwMmEtYjk3Ni1iNTQ3YTBmNWNhYzQiLCJwcm9kdWN0X2lkIjo1LCJhdWQiOiJhcGktc2VydmljZSIsInN1YiI6IjI4YjhkYTZmLTAzYTUtNDhlNC04NjMxLTRiYzE0NjRlNjZhNyIsImlzcyI6ImNvbnNvbGUiLCJpYXQiOjE3MzY3MzQwODZ9.kQkT46keVLlsO8U7clPOLf7uOHxUxelT9kSqmg-eNXmfd_Zi1qrarNnLWgSSqEgoBH33Jay23q9pt-03AWkwa5S0hR9RQORPzq639W3A5FlU23ZEo29s75tckl_Nrv3BLCKjIoI2VxyHn2bk7GpArmIk4sQHUIKRjgYZeVE9G1GEWhGY_HM7ShglwEk8DejpY_YxBVMJqRQsM6EKdqQhEADmhlqXWUW-ErY7ILO_cwXmzAwCblYIS7aCpVKt4X1eMLebKIx_XG_ZwpKyzVIDrqAU8HbWvHsjfD4INJo4ukpC0ErUQsxygr9yzwriMSO0wEMePQCYyT2n9c8CahFaig"
 
     def stt(filename: str) -> dict:
         job = submit_stt_request(filename)
@@ -888,11 +888,11 @@ def speech_to_text_nav(page):
     f.write(final)
     f.close()
 
-    if(final == "utama"):
+    if(final == "utama" or final == "halaman utama"):
         playsound(os.getcwd()+'/tts/Utama.wav')
         return redirect("/")
     
-    if(final =="ujian"):
+    if(final =="ujian" or final == "halaman ujian"):
         playsound(os.getcwd()+'/tts/Token.wav')
         return redirect("/insert_token")
 
@@ -969,7 +969,7 @@ def speech_to_text_token():
 
 
     url = "https://api.prosa.ai/v2/speech/stt"
-    api_key = "eyJhbGciOiJSUzI1NiIsImtpZCI6Ik5XSTBNemRsTXprdE5tSmtNaTAwTTJZMkxXSTNaamN0T1dVMU5URmxObVF4Wm1KaSIsInR5cCI6IkpXVCJ9.eyJhcHBsaWNhdGlvbl9pZCI6NDEwMjk4LCJsaWNlbnNlX2tleSI6IjFkMzdjMzZjLTUxNTUtNDU3OS1iNzcyLTFkZmQ4YTQyYTdkYSIsInVuaXF1ZV9rZXkiOiIwM2IyZjRjNy1lOGEwLTRmNWQtYTc1OC0wNWRlNzAyMDZjYjgiLCJwcm9kdWN0X2lkIjo1LCJhdWQiOiJhcGktc2VydmljZSIsInN1YiI6IjQ1NzgzYTYxLWM3NmYtNDVkMi1hOGNjLWMxNGVkMmNkZjg0YSIsImlzcyI6ImNvbnNvbGUiLCJpYXQiOjE3MzQwMTkzNzN9.PQryj95twyxIEdmYSUBXk3y3D2TeRP70TifjkbvNdqVynFG-ZtuTJjPaKWi5wu_L9JwTWAFfd7enT10o1FANEGMZBT5MvrwnOImXSMmebM5U7nPtZ2p8YeeEGPxdk-5OfL4i_YHusJ9YmeKJ0H6QBZ6P8E-3EWr1bRwO03BAs07VpkxqIufPdLRGGZre3kJgoWxWYPb-73ti3zz7PCf6WTfOSP-zyg9E-6uWnwBhcix9sSfc7jSk8OgugKSNZ_QqPo6kynTKAR2Qn24GLN4vuWtVEypqhioVqyB4B5MwYKaVsQLJv041hNU8_FdB4eF3iULJREeHOm-7NTVUxxIDgA"
+    api_key = "eyJhbGciOiJSUzI1NiIsImtpZCI6Ik5XSTBNemRsTXprdE5tSmtNaTAwTTJZMkxXSTNaamN0T1dVMU5URmxObVF4Wm1KaSIsInR5cCI6IkpXVCJ9.eyJhcHBsaWNhdGlvbl9pZCI6NDE1NDc0LCJsaWNlbnNlX2tleSI6IjY5MzU1NzJmLWFmZGMtNGMwMC04YjdlLTgyMWQ5NTFiZmZiMiIsInVuaXF1ZV9rZXkiOiIxYWRiODBmOS1lOGIwLTQwMmEtYjk3Ni1iNTQ3YTBmNWNhYzQiLCJwcm9kdWN0X2lkIjo1LCJhdWQiOiJhcGktc2VydmljZSIsInN1YiI6IjI4YjhkYTZmLTAzYTUtNDhlNC04NjMxLTRiYzE0NjRlNjZhNyIsImlzcyI6ImNvbnNvbGUiLCJpYXQiOjE3MzY3MzQwODZ9.kQkT46keVLlsO8U7clPOLf7uOHxUxelT9kSqmg-eNXmfd_Zi1qrarNnLWgSSqEgoBH33Jay23q9pt-03AWkwa5S0hR9RQORPzq639W3A5FlU23ZEo29s75tckl_Nrv3BLCKjIoI2VxyHn2bk7GpArmIk4sQHUIKRjgYZeVE9G1GEWhGY_HM7ShglwEk8DejpY_YxBVMJqRQsM6EKdqQhEADmhlqXWUW-ErY7ILO_cwXmzAwCblYIS7aCpVKt4X1eMLebKIx_XG_ZwpKyzVIDrqAU8HbWvHsjfD4INJo4ukpC0ErUQsxygr9yzwriMSO0wEMePQCYyT2n9c8CahFaig"
 
     def stt(filename: str) -> dict:
         job = submit_stt_request(filename)
@@ -1017,12 +1017,12 @@ def speech_to_text_token():
     f.write(final)
     f.close()
 
-    if(final == "utama"):
+    if(final == "utama" or final == "halaman utama"):
         playsound(os.getcwd()+'/tts/Utama.wav')
         return redirect("/")
     
-    if(final =="ujian"):
-        playsound(os.getcwd()+'/tts/Ujian.wav')
+    if(final =="ujian" or final == "halaman ujian"):
+        playsound(os.getcwd()+'/tts/Token.wav')
         return redirect("/insert_token")
 
     if(final =="hasil ujian"):
